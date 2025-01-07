@@ -32,7 +32,7 @@ current_page = 1
 while current_page<=last_page :
 
     container = WebDriverWait(driver , 5).until(EC.presence_of_element_located((By.CLASS_NAME,'adbl-impression-container ')))
-    book_list = WebDriverWait(container , 5).until(EC.presence_of_all_elements_located((By.XPATH,'adbl-impression-container ')))
+    book_list = WebDriverWait(container , 5).until(EC.presence_of_all_elements_located((By.XPATH,'//li[contains(@class , "productListItem")]')))
     next_page = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH ,'//span[contains(@class , "nextButton")]')))
 
     for book in book_list:
