@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import pandas as pd
 import time
@@ -29,10 +31,9 @@ book_time =[]
 current_page = 1
 while current_page<=last_page :
 
-    time.sleep(2)
-
-    container = driver.find_element(By.CLASS_NAME, 'adbl-impression-container ')
-    book_list = container.find_elements(By.XPATH, '//li[contains(@class , "productListItem")]')
+    container = WebDriverWait(driver , 5).until(EC.presence_of_element_located((By.CLASS_NAME,'adbl-impression-container ')))
+    book_list = WebDriverWait(container , 5).until(EC.presence_of_all_elements_located((By.XPATH,'adbl-impression-container ')))
+    next_page = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH ,'//span[contains(@class , "nextButton")]')))
 
     for book in book_list:
         book_title = book.find_element(By.XPATH,'.//h3[contains(@class , "bc-heading")]').text
@@ -48,7 +49,6 @@ while current_page<=last_page :
         except:
             book_narrator.append('no narrator')
         book_time.append(book.find_element(By.XPATH, './/li[contains(@class , "runtimeLabel")]').text)
-
 
     current_page = current_page + 1
     try:
